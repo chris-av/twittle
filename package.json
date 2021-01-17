@@ -1,6 +1,6 @@
 {
   "name": "twittle",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Twitter CLI",
   "main": "index.js",
   "bin": {
@@ -9,7 +9,11 @@
   "scripts": {
     "start": "node index.js"
   },
-  "keywords": [ "twittle", "twitter", "cli" ],
+  "keywords": [
+    "twittle",
+    "twitter",
+    "cli"
+  ],
   "author": "Christian Valenzuela",
   "license": "MIT",
   "homepage": "https://github.com/im2wddrf/twittle.git",
