@@ -1,4 +1,5 @@
 const handleErr = require('./error-handling');
+const util = require('util');
 
 module.exports = async function(instance) {
   try {
