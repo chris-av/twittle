@@ -46,7 +46,8 @@ module.exports = async function(instance, args) {
       ) : (
         await instance.getTweets(userid, nextPageToken)
       )
-      response.data.forEach(tweet => {
+      console.log(Object.keys(response));
+      response.data && response.data.forEach(tweet => {
         tweets.push( tweet );
       });
       metas.push( response.meta );
