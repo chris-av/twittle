@@ -15,8 +15,8 @@ const help = require('./utils/cli-help');
 
 const args = process.argv
   .filter(ar => ar !== process.execPath)
+  .filter(ar => !ar.includes('/'))
   .filter(ar => !ar.includes('/index.js'))
-
 
 async function main() {
   
