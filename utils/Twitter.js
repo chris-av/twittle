@@ -11,28 +11,29 @@ class Twitter {
       }
     });
   }
-  
+
   async queryTweet(tweetId) {
     try {
       const res = await this.api.get(`tweets/${tweetId}`, {
         params: { 'tweet.fields': 'public_metrics' }
       });
+      if (res.data.errors) { throw res.data; }
       const data = res.data.data;
       return data;
     } catch (err) {
       return err;
     }
   }
-  
+
   async queryUserById(userId) {
     try {
       const res = await this.api.get(`users/${userId}`, {
         params: { 'user.fields': 'public_metrics' }
       });
+      if (res.data.errors) { throw res.data; }
       const data = res.data;
       return data;
     } catch (err) {
-      console.log(`could not find any data for user id : ${userId}`);
       return err;
     }
   }
@@ -42,10 +43,10 @@ class Twitter {
       const res = await this.api.get(`users/by/username/${userName}`, {
         params: { 'user.fields': 'public_metrics' }
       });
+      if (res.data.errors) { throw res.data; }
       const data = res.data.data;
       return data;
     } catch (err) {
-      console.log(`could not find any data for user name : ${userName}`);
       return err;
     }
   }
@@ -56,32 +57,35 @@ class Twitter {
       const params = { max_results: 100, 'tweet.fields': 'public_metrics,created_at' };
       if (pageToken) { params.pagination_token = pageToken; }
       const res = await this.api.get(`users/${userId}/tweets`, { params: params });
+      if (res.data.errors) { throw res.data; }
       const data = res.data;
       return data;
     } catch (err) {
       return err;
     }
   }
-  
+
   async getFollowers(userId) {
     try {
       const res = await this.api.get(`users/${userId}/followers`);
+      if (res.data.errors) { throw res.data; }
       const data = res.data.data;
       return data;
-    } catch(err) {
+    } catch (err) {
       return err;
     }
   }
-  
+
   async setStreamRules(rules) {
     // rules are in the form : [ { value: 'rule syntax', tag: 'rule description' }, ... ]
     try {
       const res = await this.api.post(`tweets/search/stream/rules`, {
         add: rules
       });
+      if (res.data.errors) { throw res.data; }
       const data = res;
       return data;
-    } catch(err) {
+    } catch (err) {
       return err;
     }
   }
@@ -89,19 +93,21 @@ class Twitter {
   async getStreamRules() {
     try {
       const res = await this.api.get(`tweets/search/stream/rules`);
+      if (res.data.errors) { throw res.data; }
       const data = res.data;
       return data;
-    } catch(err) {
+    } catch (err) {
       return err;
     }
   }
-  
+
   async deleteStreamRules(rules) {
     // rules are in the form [ 0000, 0000, ... ]
     try {
       const res = await this.api.post(`tweets/search/stream/rules`, {
         delete: { ids: rules }
       });
+      if (res.data.errors) { throw res.data; }
       const data = res.data;
       return data;
     } catch (err) {
@@ -132,7 +138,7 @@ class Twitter {
             // console.log(util.inspect(data, { depth: null, colors: true }));
 
             if (
-              data.includes.users[0].public_metrics.followers_count > filters.followers & 
+              data.includes.users[0].public_metrics.followers_count > filters.followers &
               data.includes.users[0].public_metrics.following_count > filters.following
             ) {
 
@@ -148,7 +154,7 @@ class Twitter {
               console.log('\n');
 
             }
-            
+
           } catch (err) {
             console.log(chunk.toString());
           }
