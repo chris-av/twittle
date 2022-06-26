@@ -39,8 +39,10 @@ async function main() {
   }
 
   try {
+
+    const env_vars = Object.keys(process.env);
     
-    if (!Object.keys(process.env).includes('TWITTER_BEARER_TOKEN')) throw 'need environmental variable $TWITTER_BEARER_TOKEN defined for this utility to work';
+    if (!env_vars.includes('TWITTER_BEARER_TOKEN')) throw 'need environmental variable $TWITTER_BEARER_TOKEN defined for this utility to work';
     if (accum > 1) throw 'cannot have more than one cli command, must use only one flag\n';
     
     const twitter = new Twitter({
