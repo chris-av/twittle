@@ -135,7 +135,6 @@ class Twitter {
         response.on('data', function(chunk) {
           try {
             const data = JSON.parse(chunk);
-            // console.log(util.inspect(data, { depth: null, colors: true }));
 
             if (
               data.includes.users[0].public_metrics.followers_count > filters.followers &
