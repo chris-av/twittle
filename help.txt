@@ -1,0 +1,166 @@
+Twittle Manual
+
+
+NAME
+
+    Twittle - command line app for interfacing with Twitter's APIs
+
+
+
+SYNOPSIS
+
+    twittle [command] [arguments ...]
+
+
+
+DESCRIPTION
+
+    A little command line app for using the Twitter API. Some of the things you can
+    do with this app include downloading tweets, getting user information, and 
+    streaming tweets in real time. Meant to be used in the terminal.
+
+    Authentication for the app should be stored in an environment variable named: 
+    TWITTER_BEARER_TOKEN, which should be the bearer token associated with your
+    Twitter Developer account. 
+
+    This project is not endorsed by or in any way affiliated with Twitter
+
+    NOTE: please do keep in mind that some command line options do require
+    quotation marks for it to work. text enclosed in brackets indicate 
+    user input whereas quotes indicate actual quotes required to run these
+    commands successfully.
+
+
+
+OPTIONS
+    
+    --help
+
+            prints the help.txt file to stdout. Sorta like man twittle.
+            Since this is a node app, I cannot pipe output to less, so
+            make sure to pipe to less or your preferred pager for sane
+            navigation
+
+            # example
+            twittle --help | less
+
+
+
+    --guid [userids...]     
+
+            "get user by id", gets user data when you provide an id
+
+            # example
+            twittle --guid 32232323 1113556
+
+
+
+    --guna [usernames...]     
+
+            "get user by id", gets user data when you provide a username.
+            Make sure to omit the @ symbol
+
+            # example
+            twittle --guna twitterdev
+
+
+
+    --ssr 'tag:[rule name]' 'value:[stream rule]' 
+
+            "set stream rules", configure the rules that your stream
+            will use to determine which streams to output to your stdout.
+            Stream rules can include capturing key words, patterns, etc.
+
+            # example
+            twittle --ssr 'tag:mentions lions' 'value:lion or lions'
+
+
+
+    --gsr 
+
+            "get stream rules", retrieves all of the stream rules you 
+            currently have configured. The returned output, should include
+            the id's of each stream rule, which you may need for other 
+            cli options.
+
+            This command does not take any arguments.
+
+            # example
+            twittle --gsr
+
+
+
+    --dsr [rule ids...]
+
+            "delete stream rules", deletes one or multiple stream rules
+            you currently have configured. Must provide the id of a stream 
+            rule to delete. To find the id's of the rules you currently 
+            have, run --gsr
+
+            # example
+            twittle --dsr 1222245
+
+
+
+    --csr
+
+            "clear stream rules", deletes all stream rules that you currently
+            have configured. This command does not take any arguments.
+
+            # example
+            twittle --csr
+
+
+
+    --stream 'followers:[# of followers]' 'following:[# accounts following]'
+
+            initiates a stream, and streams to stdout live tweets based on
+            the rules that are configed in --gsr. These rules are associated
+            with your Twitter Developer account and so help specify the kind
+            of tweets your API quota is consuming.
+
+            NOTE: on the other hand, the 'followers' and the 'following' 
+            options are not filters associated with the Twitter API; 
+            rather, they are filters implemented by this cli app to hide 
+            tweets that do not follow the criteria described by the cli args.
+
+            'followers' --> at least x many followers
+            'following' --> following at least x many accounts
+            
+            This means that, though you have filtered for only accounts with
+            certain follower/following criteria, your Twitter API will consume
+            your quota as if these rules didn't exist (because again, 
+            the cli just hides these tweets from you and have nothing to do 
+            with the Twitter API).
+
+            # examples
+            twittle --stream
+            twittle --stream 'followers:10000' 'following:200'
+
+
+
+    --tweets 'username:[username]' 'userid:[userid]' 'pages:[page number(s), or all]'
+             'file:[filepath]'
+
+            displays recent tweets to stdout. You can provide EITHER a usename or a userid. 
+
+            In addition, you can specify how many tweets to retrieve. By default it only
+            pulls a limited amount, but you can provide an integer of the number of "pages"
+            of tweets (around 100 at a time). alternatively, by indicated 'all', the cli 
+            app will retrieve all the tweets it can find as far back as the Twitter API 
+            will allow.
+
+            finally, you can indicate a filepath to write all of the tweets into a local 
+            file. The output will be in the form of a JSON file. It looks like this: 
+
+            {
+              tweets: [ array of tweets ],
+              metas: [ array of meta objects describing each page of tweets it found ],
+            }
+
+            # examples
+            twittle --tweets twitterdev
+            twittle --tweets twitterdev 'pages:all' 'file:twitter-dev.json'
+            twittle --tweets twitterdev 'pages:all' 'file:~/Desktop/twitter-dev.json'
+
+
