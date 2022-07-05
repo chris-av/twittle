@@ -49,7 +49,7 @@ async function main() {
       bearerToken: process.env.TWITTER_BEARER_TOKEN
     });
 
-    if (flags.guid)  await getUserId(twitter, args);
+    if (flags.guid) await getUserId(twitter, args);
     if (flags.guna) await getUsername(twitter, args);
     if (flags.gsr) await getStreamRules(twitter);
     if (flags.dsr) await deleteStreamRules(twitter, args);
