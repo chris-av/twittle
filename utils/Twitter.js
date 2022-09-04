@@ -65,11 +65,14 @@ class Twitter {
     }
   }
 
-  async getFollowers(userId) {
+  async getFollowers(userId, pageToken = null) {
     try {
-      const res = await this.api.get(`users/${userId}/followers`);
+      if (!userId) throw new Error('need to supply user id');
+      const params = { max_results: 100, 'user.fields': 'public_metrics,created_at,description,protected,verified' }
+      if (pageToken) { params.pagination_token = pageToken; }
+      const res = await this.api.get(`users/${userId}/followers`, { params: params });
       if (res.data.errors) { throw res.data; }
-      const data = res.data.data;
+      const data = res.data;
       return data;
     } catch (err) {
       return err;
