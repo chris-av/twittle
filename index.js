@@ -11,6 +11,7 @@ const clearStreamRules = require('./utils/cli-csr');
 const setStreamRules = require('./utils/cli-ssr');
 const stream = require('./utils/cli-stream');
 const getTweets = require('./utils/cli-tweets');
+const getFollowers = require('./utils/cli-followers');
 const help = require('./utils/cli-help');
 
 const args = process.argv
@@ -29,6 +30,7 @@ async function main() {
     if (arg.includes('--ssr')) { flags.ssr = true }
     if (arg.includes('--stream')) { flags.stream = true; };
     if (arg.includes('--tweets')) { flags.tweets = true; }
+    if (arg.includes('--followers')) { flags.followers = true; }
     if (arg.includes('--help')) { flags.help = true; }
   });
 
@@ -56,6 +58,7 @@ async function main() {
     if (flags.csr) await clearStreamRules(twitter, args);
     if (flags.ssr) await setStreamRules(twitter, args);
     if (flags.stream) await stream(twitter, args);
+    if (flags.followers) await getFollowers(twitter, args);
     if (flags.tweets) await getTweets(twitter, args);
     if (flags.help) help();
 

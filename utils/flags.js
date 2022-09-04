@@ -7,5 +7,6 @@ module.exports = {
   ssr: false,
   stream: false,
   tweets: false,
+  followers: false,
   help: false
 };
