@@ -1,7 +1,8 @@
-const fs = require('fs');
 const util = require('util');
 const delay = require('./delay');
 const handleErr = require('./error-handling');
+const checkFiletype = require('./check-filetype');
+const writeFile = require('./write-file');
 
 module.exports = async function(instance, args) {
   try {
@@ -60,13 +61,18 @@ module.exports = async function(instance, args) {
       if (nextPageToken) console.log('found next page token : ' + nextPageToken);
       console.log('');
       iter++;
-      console.log({ iter, maxiter })
       if (iter > maxiter) console.log('\nstopping here download here ... ');
     }
 
 
     if (filename) {
-      fs.writeFileSync(filename, JSON.stringify({ followers, metas }, null, 4));
+
+      writeFile({
+        filename,
+        filetype: checkFiletype(filename),
+        data: { followers, metas },
+      });
+
     } else {
       console.log(util.inspect({ followers, metas }, { depth: null, colors: true }));
     }
