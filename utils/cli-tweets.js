@@ -1,6 +1,7 @@
-const fs = require('fs');
 const util = require('util');
 const handleErr = require('./error-handling');
+const checkFiletype = require('./check-filetype');
+const writeFile = require('./write-file');
 
 module.exports = async function(instance, args) {
   try {
@@ -63,7 +64,13 @@ module.exports = async function(instance, args) {
 
 
     if (filename) {
-      fs.writeFileSync(filename, JSON.stringify({ tweets, metas }, null, 4));
+
+      writeFile({
+        filename,
+        filetype: checkFiletype(filename),
+        data: { tweets, metas },
+      });
+
     } else {
       console.log(util.inspect({ tweets, metas }, { depth: null, colors: true }));
     }
